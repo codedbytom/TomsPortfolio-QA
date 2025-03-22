@@ -2,9 +2,11 @@ import { defineConfig } from 'vite';
 import plugin from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
-export default defineConfig({
-    plugins: [plugin()],
-    server: {
-        port: 11534,
-    }
-})
+export default defineConfig(({ mode }) => (
+    {
+        plugins: [plugin()],
+        base: mode === 'production' ? '/TomsPortfolio/' : '/',
+        server: {
+            port: 11534,
+        }
+    }));
