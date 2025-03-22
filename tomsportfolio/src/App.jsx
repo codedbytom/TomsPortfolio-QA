@@ -12,8 +12,6 @@ import Hobbies from './pages/Hobbies';
 import CodingNightmares from './pages/CodingNightmares';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
       <Router>
           <Navbar />

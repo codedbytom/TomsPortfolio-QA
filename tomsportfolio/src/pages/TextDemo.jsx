@@ -1,3 +1,9 @@
+import Layout from '../components/Layout';
 export default function TextDemo() {
-    return <h1>Text Demo</h1>;
+    
+    return (
+        <Layout>
+            <h1>Text Demo</h1>
+        </Layout>
+    )
 }

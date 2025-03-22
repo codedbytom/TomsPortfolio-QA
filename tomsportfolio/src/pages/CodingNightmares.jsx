@@ -1,3 +1,8 @@
+import Layout from '../components/Layout';
 export default function CodingNightmares() {
-    return <h1>Tom's CodingNightmares</h1>
+    return (
+        <Layout>
+            <h1 className="">Tom's Coding Nightmares</h1>
+        </Layout>
+    )
 }

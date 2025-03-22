@@ -1,3 +1,8 @@
+import Layout from '../components/Layout';
 export default function Resume() {
-    return <h1>Toms Resume</h1>;
+    return (
+        <Layout>
+            <h1>Toms Resume</h1>
+        </Layout>
+    )
 }
