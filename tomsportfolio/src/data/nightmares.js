@@ -8,7 +8,7 @@
         content: [
             "Hired on full time for this company, their first internal dev hire. Always have used contractors to create and deal with their internal systems.",
             "Their lead business person hands me this word document and explains to me what needs to be done if employees or clients complained about spinning when using the websites.",
-            "So it went something like this, if there was reports of spinning, the first steap was to recyle the app pool in IIS, meaning you had to remote into the production application server and recyle them.",
+            "So it went something like this, if there was reports of spinning, the first step was to recyle the app pool in IIS, meaning you had to remote into the production application server and recyle them.",
             "If that didn't work, restart IIS",
             "If that didn't work, restart SQL Server on the database servers",
             "If everyone was still complaining? The Hail Mary, restart all the servers."
