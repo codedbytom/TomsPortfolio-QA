@@ -6,6 +6,5 @@ export default function Home() {
             <h1>Tom's Home</h1>
             <p>Welcome to my Portfolio!</p>
         </Layout>
-    )
-
+    );
 }
