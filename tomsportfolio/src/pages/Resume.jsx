@@ -4,7 +4,7 @@ export default function Resume() {
         <Layout>
             <h1>Toms Resume</h1>
             <a
-                href="/Thomas_Evanko_Senior_Developer_Resume_Sanitized.pdf"
+                href={`${import.meta.env.BASE_URL}/Thomas_Evanko_Senior_Developer_Resume_Sanitized.pdf`}
                 download
                 className="btn btn-primary mt-3"
                 target="_blank"
@@ -16,7 +16,7 @@ export default function Resume() {
             <br />
             <div className="resume-preview d-none d-md-block">
                 <iframe
-                    src="/Thomas_Evanko_Senior_Developer_Resume_Sanitized.pdf"
+                    src={`${import.meta.env.BASE_URL}/Thomas_Evanko_Senior_Developer_Resume_Sanitized.pdf`}
                     width="1250px"
                     height="1000px"
                     title="Resume Preview"
