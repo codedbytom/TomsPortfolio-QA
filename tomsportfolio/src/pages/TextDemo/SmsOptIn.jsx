@@ -21,11 +21,9 @@ const SmsOptIn = ({ workOrderId }) => {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post(`/SMS/Subscribe?phoneNumber=${encodeURIComponent(formData.phoneNumber)}`);
+      const response = await axios.post(`/OptIn/AddContact?phoneNumber=${encodeURIComponent(formData.phoneNumber)}`);
       if (response.status === 200) {
-        // Show success message
-        alert('Subscription Successful!');
-        window.location.href = '/SMS/Success';
+        
       }
     } catch (error) {
       const errorMessage = error.response?.data || 'An error occurred';
@@ -36,8 +34,14 @@ const SmsOptIn = ({ workOrderId }) => {
   };
 
   return (
-    <div className="container">
-      <img src="/images/Logo_Dark_SVG.svg" style={{ paddingBottom: '5px' }} alt="Logo" />
+    <>
+      <img 
+          src={`${import.meta.env.BASE_URL}${"/media/TBT_Logo.png"}`} 
+          className="SmsOptInLogo" 
+          alt="Logo" 
+      />
+      <br />
+      <br />
       <h3 className="text-center">Opt In For SMS Messages</h3>
       
       <div className="card">
@@ -91,12 +95,12 @@ const SmsOptIn = ({ workOrderId }) => {
       
       <div className="card text-center mt-3">
         <div className="card-footer text-muted">
-          By pressing "Submit," you consent to receive text messages from The Daniel Group at the phone number provided. 
+          By pressing "Submit," you consent to receive text messages from "Tom Built This" at the phone number provided. 
           These messages may include requests for feedback on your experience and other business-related communications. 
           Message frequency may vary. Standard message and data rates may apply. Reply STOP at any time to opt out.
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
