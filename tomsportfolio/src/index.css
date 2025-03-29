@@ -51,7 +51,11 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
-
+/* Add this CSS to make the video responsive */
+.responsive-video {
+  width: 100%;
+  height: auto; /* Maintains aspect ratio */
+}
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
