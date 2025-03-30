@@ -59,7 +59,6 @@ namespace server.Controllers
 
                 var newContact = new Contact
                 {
-                    Id = contact.Id,
                     Name = contact.Name,
                     PhoneNumber = contact.PhoneNumber,
                     OptInTime = contact.OptInTime
