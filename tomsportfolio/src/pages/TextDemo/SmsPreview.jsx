@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import {BaseLayout} from '../../components/Layout';
 
 export default function TextPreview({ contactName, phoneNumber }) {
   const [step, setStep] = useState(0);
@@ -15,7 +16,7 @@ export default function TextPreview({ contactName, phoneNumber }) {
     ];
 
     return () => timers.forEach(clearTimeout);
-  }, [nacontactNameme, phoneNumber]);
+  }, [contactName, phoneNumber]);
 
   const sendText = () => {
     setSent(true);
@@ -24,6 +25,7 @@ export default function TextPreview({ contactName, phoneNumber }) {
   };
 
   return (
+    <BaseLayout>
     <div className="text-message-container bg-white rounded-xl p-4 shadow-md max-w-md mx-auto mt-6">
       {/* Header */}
       <div className="flex items-center mb-4">
@@ -112,5 +114,6 @@ export default function TextPreview({ contactName, phoneNumber }) {
         )}
       </AnimatePresence>
     </div>
+    </BaseLayout>
   );
 }

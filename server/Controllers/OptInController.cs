@@ -35,12 +35,16 @@ namespace server.Controllers
                 {
                     return BadRequest(ModelState);
                 }
+                bool existingContact = await _context.Contacts.Where(c => c.PhoneNumber == contact.PhoneNumber).AnyAsync();
 
-                contact.OptInTime = DateTime.UtcNow; // Set the opt-in time
-                await _context.Contacts.AddAsync(contact);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction(nameof(GetContacts), new { id = contact.Id }, contact);
+                if (!existingContact)
+                {
+                    contact.OptInTime = DateTime.UtcNow; // Set the opt-in time
+                    await _context.Contacts.AddAsync(contact);
+                    await _context.SaveChangesAsync();
+                }
+                
+                return Ok(contact);
             }
             catch (Exception ex)
             {

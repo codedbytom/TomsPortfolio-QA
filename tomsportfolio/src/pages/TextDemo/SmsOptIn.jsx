@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Layout from '../../components/Layout';
+import {BaseLayout } from '../../components/Layout';
 
 const SmsOptIn = ({ workOrderId }) => {
   const [formData, setFormData] = useState({
@@ -47,7 +47,7 @@ const SmsOptIn = ({ workOrderId }) => {
   };
 
   return (
-    <Layout>
+    <BaseLayout>
       <div id="optInBody" className="container mt-4">
         <h3 className="text-center mb-4">Text Message Demo</h3>
         <div className="card mb-4">
@@ -115,7 +115,7 @@ const SmsOptIn = ({ workOrderId }) => {
           </div>
         </div>
       </div>
-    </Layout>
+    </BaseLayout>
   );
 };
 

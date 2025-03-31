@@ -1,10 +1,10 @@
-import Layout from '../components/Layout';
+import {MainLayout} from '../components/Layout';
 import { QRCode } from "react-qrcode-logo";
 
 export default function TextDemo() {
     const url = "https://your-portfolio-site.com/text-demo";
     return (
-        <Layout>
+        <MainLayout>
             <h1>Text Demo</h1>
             <h3>In Progress...</h3>
 
@@ -20,6 +20,6 @@ export default function TextDemo() {
                     </video>
                 </div>
             </div>
-        </Layout>
+        </MainLayout>
     );
 }
