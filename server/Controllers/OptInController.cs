@@ -23,7 +23,7 @@ namespace server.Controllers
         /// </summary>
         /// <param name="contact">The contact to add.</param>
         /// <returns>The created contact.</returns>
-        [HttpPost]
+        [HttpPost("AddContact")]
         [ProducesResponseType(typeof(Contact), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

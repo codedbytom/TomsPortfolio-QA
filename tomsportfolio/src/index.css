@@ -68,6 +68,10 @@ button:focus-visible {
     transition: filter 300ms; /* Keep transition if needed */
 }
 
+.country-code-select {
+  max-width: 120px;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

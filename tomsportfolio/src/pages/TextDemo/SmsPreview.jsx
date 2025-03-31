@@ -1,98 +1,116 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-const SmsPreview = () => {
-    const location = useLocation();
-    const { contactName, phoneNumber } = location.state || {}; // Destructure the state
+export default function TextPreview({ contactName, phoneNumber }) {
+  const [step, setStep] = useState(0);
+  const [sent, setSent] = useState(false);
 
-    const [isSending, setIsSending] = useState(false);
-    const [receipt, setReceipt] = useState('');
-    const [showTypingIndicator, setShowTypingIndicator] = useState(false);
-    const [showInstructionBubble, setShowInstructionBubble] = useState(false);
-    const [messageBody, setMessageBody] = useState('');
+  useEffect(() => {
+    if (!contactName || !phoneNumber) return;
 
-    useEffect(() => {
-        // Show the instruction bubble after a delay
-        const timer = setTimeout(() => {
-            setShowInstructionBubble(true);
-            setShowTypingIndicator(true);
-        }, 2000); // Wait 2 seconds before showing the instruction bubble
+    const timers = [
+      setTimeout(() => setStep(1), 2000), // Show instruction
+      setTimeout(() => setStep(2), 3000), // Show typing
+      setTimeout(() => setStep(3), 5000), // Show message
+    ];
 
-        return () => clearTimeout(timer); // Cleanup on unmount
-    }, []);
+    return () => timers.forEach(clearTimeout);
+  }, [nacontactNameme, phoneNumber]);
 
-    const sendText = async () => {
-        setIsSending(true);
-        setReceipt('Sending...');
-        setShowTypingIndicator(true);
+  const sendText = () => {
+    setSent(true);
+    setStep(4);
+    // You can hook this up to your backend via fetch/AJAX here
+  };
 
-        const countryCode = '1'; // Assuming US for this example
-        const cleanedPhoneNumber = phoneNumber.replace(/\D/g, '');
-        const fullPhoneNumber = `+${countryCode}${cleanedPhoneNumber}`;
+  return (
+    <div className="text-message-container bg-white rounded-xl p-4 shadow-md max-w-md mx-auto mt-6">
+      {/* Header */}
+      <div className="flex items-center mb-4">
+        <img src="/Media/TBT_Logo.png" alt="Logo" className="h-8 mr-2" />
+        <div className="font-bold text-gray-800">Tom Built This</div>
+      </div>
 
-        // Simulate typing indicator duration
-        setTimeout(() => {
-            setShowTypingIndicator(false);
-            setMessageBody(`You should receive a text message shortly from +18333022086`);
-        }, 2000); // Typing duration
+      {/* Instruction Bubble */}
+      <AnimatePresence>
+        {step >= 1 && (
+          <motion.div
+            key="instruction"
+            className="text-bubble system-message bg-gray-200 rounded-xl px-4 py-2 mb-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            Below is the text message that will be sent to: {phoneNumber}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-        const baseUrl = '/Sms/AddSmsRecordAndTriggerSend'; // Adjust the URL as necessary
-        const URL = `${baseUrl}?phoneNumber=${encodeURIComponent(fullPhoneNumber)}&nameForText=${encodeURIComponent(contactName)}`;
+      {/* Typing Indicator */}
+      <AnimatePresence>
+        {(step === 2 || step === 4) && (
+          <motion.div
+            key="typing"
+            className="typing-indicator flex space-x-1 mb-2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+            <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100"></span>
+            <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200"></span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-        try {
-            const response = await axios.post(URL);
-            if (response.status === 200) {
-                setReceipt('Delivered');
-            } else {
-                setReceipt('Failed to send');
-            }
-        } catch (error) {
-            setReceipt('Failed to send');
-        } finally {
-            setIsSending(false);
-        }
-    };
+      {/* Message Bubble */}
+      <AnimatePresence>
+        {step >= 3 && (
+          <motion.div
+            key="message"
+            className="text-bubble bg-blue-500 text-white rounded-xl px-4 py-2 self-end mb-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            Hey there {contactName}! Here is an example text message you would receive from Tom Built This
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-    return (
-        <div className="text-message-container">
-            <div className="message-header">
-                <div className="header-content">
-                    <img src="~/images/Logo_Dark_SVG.svg" alt="TDG Logo" className="header-logo" />
-                    <div className="contact-name">Experience Connect</div>
-                </div>
-            </div>
-
-            {showInstructionBubble && (
-                <div className="text-bubble system-message" id="instructionBubble">
-                    <div className="message-text" id="textInstructions">
-                        Below is the text message that will be sent to: {phoneNumber}
-                    </div>
-                </div>
-            )}
-
-            {showTypingIndicator && (
-                <div className="typing-indicator" id="typingIndicator">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            )}
-
-            <div className="d-none text-bubble fade-in" id="messageID">
-                <div className="message-text" id="messageBody">{messageBody}</div>
-            </div>
-
-            <span className="time d-none text-right" id="reciept">{receipt}</span>
-
-            <div className="text-center">
-                <button className="btn-primary btn" id="sendTextButton" onClick={sendText} disabled={isSending}>
-                    {isSending ? 'Sending...' : 'Send Text Message'}
-                    <i className="fas fa-sms"></i>
-                </button>
-            </div>
+      {/* Receipt */}
+      {step >= 3 && (
+        <div className="text-xs text-right text-gray-500">
+          {sent ? 'Delivered' : 'Ready to send'}
         </div>
-    );
-};
+      )}
 
-export default SmsPreview;
+      {/* Send Button */}
+      {step >= 3 && !sent && (
+        <div className="text-center mt-4">
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            onClick={sendText}
+          >
+            Send Text Message
+          </button>
+        </div>
+      )}
+
+      {/* Final Confirmation Bubble */}
+      <AnimatePresence>
+        {step === 4 && (
+          <motion.div
+            key="followup"
+            className="text-bubble system-message bg-gray-100 text-gray-800 rounded-xl px-4 py-2 mt-4"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+          >
+            You should receive a text message shortly from +18333022086
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
