@@ -10,6 +10,7 @@ const SmsOptIn = ({ workOrderId }) => {
     countryCode: '1', // Default to US
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isConsenting, setIsConsenting] = useState(false);
   const navigate = useNavigate(); // Import useNavigate
 
   const handleInputChange = (e) => {
@@ -22,6 +23,11 @@ const SmsOptIn = ({ workOrderId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Validate phone number length
+    if (formData.phoneNumber.length < 9) {
+      alert('Phone number must be at least 9 digits long');
+      return;
+    }
     setIsSubmitting(true);
     
 
@@ -48,6 +54,7 @@ const SmsOptIn = ({ workOrderId }) => {
 
   return (
     <BaseLayout>
+      <img src={`${import.meta.env.BASE_URL}/media/TBT_Logo.png`} alt="Logo" className="h-8 mr-2 SmsOptInLogo" />
       <div id="optInBody" className="container mt-4">
         <h3 className="text-center mb-4">Text Message Demo</h3>
         <div className="card mb-4">
@@ -99,11 +106,15 @@ const SmsOptIn = ({ workOrderId }) => {
               </div>
             </div>
           </div>
+          <div className="mb-3">
+            <input type="checkbox" id="optIn" name="optIn" className="me-2" onChange={() => setIsConsenting(!isConsenting)}/>
+            <label htmlFor="optIn"> I agree to receive text message surveys and alerts from Tom Built This.</label>
+          </div>
           <div className="form-group text-center">
             <button
               type="submit"
               className="btn btn-primary"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !isConsenting}
             >
               {isSubmitting ? 'Submitting...' : 'Submit'}
             </button>
@@ -111,7 +122,7 @@ const SmsOptIn = ({ workOrderId }) => {
         </form>
         <div className="card text-center mt-4">
           <div className="card-footer text-muted">
-            By pressing "Submit," you consent to receive text messages from Tom Built This at the phone number provided. These messages may include requests for feedback on your experience and other business-related communications. Message frequency may vary. Standard message and data rates may apply. Reply STOP at any time to opt out.
+            By checking the box and clicking “Submit,” you agree to receive occasional text messages from Tom Built This at the number provided. These messages may include short surveys or demo-related alerts. Message frequency will be limited. Standard message and data rates may apply. Reply STOP at any time to opt out
           </div>
         </div>
       </div>

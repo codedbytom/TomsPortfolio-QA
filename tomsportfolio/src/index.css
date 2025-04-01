@@ -69,7 +69,7 @@ button:focus-visible {
 }
 
 .country-code-select {
-  max-width: 120px;
+  max-width: 7.5em;
 }
 
 @media (prefers-color-scheme: light) {
