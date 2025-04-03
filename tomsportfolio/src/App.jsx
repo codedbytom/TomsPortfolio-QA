@@ -18,8 +18,8 @@ function App() {
                   <Route path="/text-demo" element={<TextDemo />} />
                   <Route path="/hobbies" element={<Hobbies />} />
                   <Route path="/coding-nightmares" element={<CodingNightmares />} />
-                  <Route path="/text-demo/smsoptin" element={<SmsOptIn />} />
-                  <Route path="/text-demo/smspreview" element={<SmsPreview />} />
+                  <Route path="/text-demo/sms-opt-in" element={<SmsOptIn />} />
+                  <Route path="/text-demo/sms-preview" element={<SmsPreview />} />
               </Routes>
       </Router>
   )

@@ -32,18 +32,24 @@ const SmsOptIn = ({ workOrderId }) => {
     
 
     try {
+      // Comment out the actual API call for now
+      /*
       const response = await axios.post(`${import.meta.env.VITE_API_URL_HTTP}/OptIn/AddContact`, {
         phoneNumber: `${formData.countryCode}${formData.phoneNumber}`,
         name: formData.name,
         workOrderId: workOrderId,
       });
-      if (response.status === 200) {
-        // Handle successful submission (e.g., show a success message)
-        navigate('/TextDemo/SmsPreview', { state: { 
-          phoneNumber: `${formData.countryCode}${formData.phoneNumber}` },
-          contactName: formData.name
-         });
-      }
+      */
+      
+      // Simulate successful submission
+      navigate('/text-demo/sms-preview', { 
+        state: { 
+          phoneNumber: `${formData.countryCode}${formData.phoneNumber}`,
+          contactName: formData.name,
+          justOptedIn: true // Add this flag to show success message
+        }
+      });
+      
     } catch (error) {
       const errorMessage = error.response?.data || 'An error occurred';
       alert(errorMessage);
@@ -122,7 +128,7 @@ const SmsOptIn = ({ workOrderId }) => {
         </form>
         <div className="card text-center mt-4">
           <div className="card-footer text-muted">
-            By checking the box and clicking “Submit,” you agree to receive occasional text messages from Tom Built This at the number provided. These messages may include short surveys or demo-related alerts. Message frequency will be limited. Standard message and data rates may apply. Reply STOP at any time to opt out
+            By checking the box and clicking "Submit," you agree to receive occasional text messages from Tom Built This at the number provided. These messages may include short surveys or demo-related alerts. Message frequency will be limited. Standard message and data rates may apply. Reply STOP at any time to opt out
           </div>
         </div>
       </div>
