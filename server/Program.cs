@@ -44,10 +44,15 @@ var credentials = Credentials.FromApiKeyAndSecret(
     configuration["ApiSecret"]
 );
 
-var vonageClient = new VonageClient(credentials);
+builder.Services.AddSingleton(sp =>
+{
+    var credentials = Credentials.FromApiKeyAndSecret(
+        configuration["ApiKey"],
+        configuration["ApiSecret"]
+    );
+    return new VonageClient(credentials);
+});
 
-// Register the single instance
-//builder.Services.AddSingleton(vonageClient);
 
 var app = builder.Build();
 
