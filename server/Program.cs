@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=appdata.db"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register CORS policy
 builder.Services.AddCors(options =>
@@ -53,6 +53,13 @@ builder.Services.AddSingleton(sp =>
     return new VonageClient(credentials);
 });
 
+// Register MessagingService with the phone number from configuration
+builder.Services.AddScoped<IMessagingService>(sp => 
+    new MessagingService(
+        sp.GetRequiredService<VonageClient>(),
+        configuration["VonagePhoneNumber"]
+    )
+);
 
 var app = builder.Build();
 

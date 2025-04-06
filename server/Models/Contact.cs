@@ -7,7 +7,7 @@
         public string PhoneNumber { get; set; } = "";
         public DateTime OptInTime { get; set; } = DateTime.UtcNow;
         public DateTime OptOutTime { get; set; } = DateTime.MinValue;
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
 
         public List<SurveyTemplate> Surveys { get; set; } = new();
         public List<Message> Messages { get; set; } = new();

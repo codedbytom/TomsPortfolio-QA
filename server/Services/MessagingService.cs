@@ -4,45 +4,37 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Vonage;
+using Vonage.Messaging;
 
 namespace server.Services
 {
     public class MessagingService : IMessagingService
     {
-        private readonly HttpClient _httpClient;
-        private VonageClient _VonageClient { get; set; }
-        public MessagingService(HttpClient httpClient, VonageClient vonageClient)
+        private readonly VonageClient _VonageClient;
+        private readonly string _fromNumber;
+
+        public MessagingService(VonageClient vonageClient, string fromNumber)
         {
             Debug.WriteLine($"New SmsService created at {DateTime.Now}");
             Debug.WriteLine($"VonageClient hash: {vonageClient.GetHashCode()}");
-            _httpClient = httpClient;
             _VonageClient = vonageClient;
+            _fromNumber = fromNumber;
         }
 
         public async Task SendMessageAsync(string phoneNumber, string messageContent)
         {
-            // Here you would implement the logic to send the message.
-            // This could involve calling an external SMS API.
-
-            var messageData = new Vonage.Messaging.SendSmsRequest
+            var messageData = new SendSmsRequest
             {
                 To = phoneNumber,
-                From = "18",
-                Text = "Hi Tom! This is your first message from your own application and Vonage Phone Number!"
+                From = _fromNumber,
+                Text = messageContent
             };
 
-
-            var json = JsonSerializer.Serialize(messageData);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            // Example API endpoint (replace with your actual SMS provider's endpoint)
             var response = await _VonageClient.SmsClient.SendAnSmsAsync(messageData);
 
-
-            if (!response.IsSuccessStatusCode)
+            if (response.Messages[0].Status != "0")
             {
-                // Handle error (log it, throw an exception, etc.)
-                throw new Exception("Failed to send message");
+                throw new Exception($"Failed to send message: {response.Messages[0].ErrorText}");
             }
         }
     }

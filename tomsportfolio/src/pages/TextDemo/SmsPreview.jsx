@@ -143,7 +143,7 @@ export default function TextPreview() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
             >
-              You should receive a text message shortly from +18333022086
+              You should receive a text message shortly from +12018994890
             </motion.div>
           )}
         </AnimatePresence>
