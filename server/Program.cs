@@ -4,15 +4,26 @@ using server.Services;
 using Vonage.Request;
 using Vonage;
 using Microsoft.Extensions.Configuration;
+using Serilog;
+using Serilog.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
+// Add Serilog as the logging provider
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.ClearProviders();
+    loggingBuilder.AddSerilog(dispose: true);
+});
 
 // Add services to the container.
-
-
-
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -57,7 +68,8 @@ builder.Services.AddSingleton(sp =>
 builder.Services.AddScoped<IMessagingService>(sp => 
     new MessagingService(
         sp.GetRequiredService<VonageClient>(),
-        configuration["VonagePhoneNumber"]
+        configuration["VonagePhoneNumber"],
+        sp.GetRequiredService<ILogger<MessagingService>>()
     )
 );
 
