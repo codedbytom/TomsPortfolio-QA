@@ -12,5 +12,6 @@ namespace server.data
         public DbSet<SurveyTemplate> Surveys { get; set; }
         public DbSet<Question> Questions { get; set; }
         public DbSet<Answer> Answers { get; set; }
+        public DbSet<SurveyResponse> SurveyResponses { get; set; }
     }
 }
