@@ -150,6 +150,7 @@ export default function TextPreview() {
             style={{ backgroundColor: '#007AFF' }}
             className="send-button"
             onClick={sendText}
+            disabled={true}
           >
             Send
           </button>
