@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using server.Models;
 using server.Services;
+using Microsoft.EntityFrameworkCore;
+using server.data;
 
 namespace server.Controllers
 {
@@ -10,11 +12,13 @@ namespace server.Controllers
     {
         private readonly ISurveyService _surveyService;
         private readonly IMessageService _messageService;
+        private readonly AppDbContext _context;
 
-        public DemoSurveyController(ISurveyService surveyService, IMessageService messageService)
+        public DemoSurveyController(ISurveyService surveyService, IMessageService messageService, AppDbContext context)
         {
             _surveyService = surveyService;
             _messageService = messageService;
+            _context = context;
         }
 
         [HttpPost("submit")]
@@ -25,9 +29,8 @@ namespace server.Controllers
                 // Create survey response
                 var surveyResponse = new SurveyResponse
                 {
-                    Id = Guid.NewGuid().ToString(),
-                    ContactId = submission.ContactId,
                     SurveyId = "demo-survey", // Fixed ID for demo survey
+                    ContactId = submission.ContactId,
                     StartedAt = DateTime.UtcNow,
                     CompletedAt = DateTime.UtcNow,
                     Answers = new List<Answer>
@@ -84,6 +87,24 @@ namespace server.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { error = "Failed to submit survey", details = ex.Message });
+            }
+        }
+
+        [HttpGet("questions")]
+        public async Task<IActionResult> GetSurveyQuestions()
+        {
+            try
+            {
+                var questions = await _context.Questions
+                    .Include(q => q.PossibleAnswers)
+                    .OrderBy(q => q.OrderInSurvey)
+                    .ToListAsync();
+
+                return Ok(questions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Failed to fetch survey questions", details = ex.Message });
             }
         }
 
