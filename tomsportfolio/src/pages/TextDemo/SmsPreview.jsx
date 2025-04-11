@@ -132,7 +132,7 @@ export default function TextPreview() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
             >
-              Hey there {contactName}! Here is an example text message you would receive from Tom Built This
+              Tom Built This: {contactName}, you’ve subscribed to our SMS demo. Msg & data rates may apply. Reply HELP for help, STOP to cancel.
             </motion.div>
           )}
         </AnimatePresence>
@@ -144,7 +144,7 @@ export default function TextPreview() {
         <div className="ios-message-bar">
           <div className="ios-message-input">
 
-            <span className="message-text">Hey there {contactName}! Here is an example text message you would receive from Tom Built This</span>
+            <span className="message-text">Tom Built This: {contactName}, you’ve subscribed to our SMS demo. Msg & data rates may apply. Reply HELP for help, STOP to cancel.</span>
           </div>
           <button
             style={{ backgroundColor: '#007AFF' }}

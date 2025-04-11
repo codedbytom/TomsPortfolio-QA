@@ -47,7 +47,6 @@ We use the information we collect to:
 
 ### Data Retention
 - Phone numbers are deleted after demo completion
-- Survey responses are anonymized
 - Demo interaction data is aggregated
 
 ## Your Rights
