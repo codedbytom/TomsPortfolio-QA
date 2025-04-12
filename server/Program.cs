@@ -94,6 +94,11 @@ app.UseAuthorization();
 app.MapControllers();
 app.UseAuthorization();
 
+// Add middleware, endpoints, etc.
+
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+app.Urls.Add($"http://*:{port}");
+
 app.MapControllers();
 
 app.Run();
