@@ -39,28 +39,24 @@ namespace server.Controllers
                         {
                             QuestionId = 1,
                             Response = submission.Rating.ToString(),
-                            ContactId = submission.ContactId,
                             SubmittedAt = DateTime.UtcNow
                         },
                         new Answer
                         {
                             QuestionId = 2,
                             Response = submission.Recommendation,
-                            ContactId = submission.ContactId,
                             SubmittedAt = DateTime.UtcNow
                         },
                         new Answer
                         {
                             QuestionId = 3,
                             Response = string.Join(",", submission.Likes),
-                            ContactId = submission.ContactId,
                             SubmittedAt = DateTime.UtcNow
                         },
                         new Answer
                         {
                             QuestionId = 4,
                             Response = submission.Comments.Suggestions,
-                            ContactId = submission.ContactId,
                             SubmittedAt = DateTime.UtcNow
                         }
                     }

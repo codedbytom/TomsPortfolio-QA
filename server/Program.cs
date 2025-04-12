@@ -23,21 +23,67 @@ builder.Services.AddLogging(loggingBuilder =>
     loggingBuilder.AddSerilog(dispose: true);
 });
 
-// Add services to the container.
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Get environment
+var environment = builder.Environment.EnvironmentName;
+
+// Configure database based on environment
+if (environment == "Development")
+{
+    // Use SQLite for development
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlite("Data Source=appdata.db"));
+}
+else
+{
+    // For production, try to get connection string from environment
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        // Try to get Railway connection string
+        var railwayUrl = Environment.GetEnvironmentVariable("RAILWAY_DATABASE_URL");
+        if (!string.IsNullOrEmpty(railwayUrl))
+        {
+            var uri = new Uri(railwayUrl);
+            var userInfo = uri.UserInfo.Split(':');
+            connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require";
+        }
+    }
+
+    if (!string.IsNullOrEmpty(connectionString))
+    {
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseNpgsql(connectionString));
+    }
+    else
+    {
+        // Fallback to SQLite if no connection string is found
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlite("Data Source=appdata.db"));
+    }
+}
 
 // Register CORS policy
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:11534")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+        var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+        if (allowedOrigins == null || !allowedOrigins.Any())
+        {
+            // Default to localhost in development
+            policy.WithOrigins("http://localhost:11534")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }
+        else
+        {
+            policy.WithOrigins(allowedOrigins)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        }
     });
 });
-
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -82,7 +128,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//Easier debugging in development
+// Always use HTTPS in production
 if (!app.Environment.IsDevelopment())
 {
     app.UseHttpsRedirection();
@@ -91,14 +137,6 @@ if (!app.Environment.IsDevelopment())
 app.UseRouting();
 app.UseCors("AllowFrontend");
 app.UseAuthorization();
-app.MapControllers();
-app.UseAuthorization();
-
-// Add middleware, endpoints, etc.
-
-var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
-app.Urls.Add($"http://*:{port}");
-
 app.MapControllers();
 
 app.Run();

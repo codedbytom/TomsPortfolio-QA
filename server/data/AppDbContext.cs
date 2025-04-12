@@ -18,6 +18,9 @@ namespace server.data
         {
             base.OnModelCreating(modelBuilder);
 
+            // Use a static date for seed data
+            var seedDate = new DateTime(2024, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
             // Seed demo survey questions
             modelBuilder.Entity<Question>().HasData(
                 new Question
@@ -56,16 +59,6 @@ namespace server.data
                     OrderInSurvey = 4,
                     Type = QuestionType.Text
                 }
-            );
-
-            // Seed possible answers for multiple choice question
-            modelBuilder.Entity<Answer>().HasData(
-                new Answer { Id = 1, QuestionId = 3, Response = "The Text Messages" },
-                new Answer { Id = 2, QuestionId = 3, Response = "The iMessage like preview" },
-                new Answer { Id = 3, QuestionId = 3, Response = "The Slack Opt-in Page" },
-                new Answer { Id = 4, QuestionId = 3, Response = "Ease of Use" },
-                new Answer { Id = 5, QuestionId = 3, Response = "The Survey itself" },
-                new Answer { Id = 6, QuestionId = 3, Response = "N/A" }
             );
         }
     }

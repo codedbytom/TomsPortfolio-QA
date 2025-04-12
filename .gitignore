@@ -412,3 +412,10 @@ MigrationBackup/
 FodyWeavers.xsd
 server/appsettings.Development.json
 tomsportfolio/obj/Debug/package.g.props
+
+# SQLite database files
+*.db
+*.sqlite
+*.sqlite3
+appdata.db
+server/appdata.db

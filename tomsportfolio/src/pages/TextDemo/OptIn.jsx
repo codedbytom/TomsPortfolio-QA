@@ -32,11 +32,10 @@ const SmsOptIn = ({ workOrderId }) => {
     
 
     try {
-      /* const response = await axios.post(`${import.meta.env.VITE_API_URL_HTTP}/OptIn/AddContact`, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL_HTTP}/OptIn/AddContact`, {
         phoneNumber: `${formData.countryCode}${formData.phoneNumber}`,
-        name: formData.name,
-        workOrderId: workOrderId,
-      }); */
+        name: formData.name
+      });
       
       
       // Simulate successful submission
